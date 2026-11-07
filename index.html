@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff4e8">
+  <meta name="description" content="A little birthday card made with lots of love for Javi.">
+  <title>Happy Birthday, Javi! 🎂</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #342747;
+      --muted: #71647b;
+      --pink: #ff6f91;
+      --orange: #ffad69;
+      --cream: #fff8f0;
+      --lilac: #c9b6ff;
+      --shadow: 0 24px 70px rgba(80, 46, 83, .16);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      display: grid;
+      place-items: center;
+      padding: 32px 18px;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(255, 190, 145, .48), transparent 34%),
+        radial-gradient(ellipse at 88% 82%, rgba(201, 182, 255, .48), transparent 35%),
+        #fff4e8;
+      font-family: ui-rounded, "Segoe UI", "Trebuchet MS", system-ui, sans-serif;
+    }
+
+    .sparkle { position: fixed; z-index: 0; pointer-events: none; opacity: .7; animation: float 5s ease-in-out infinite; }
+    .sparkle:nth-child(1) { top: 11%; left: 12%; font-size: 30px; }
+    .sparkle:nth-child(2) { top: 20%; right: 13%; font-size: 23px; animation-delay: -2s; }
+    .sparkle:nth-child(3) { bottom: 13%; left: 16%; font-size: 24px; animation-delay: -3s; }
+    .sparkle:nth-child(4) { right: 12%; bottom: 18%; font-size: 32px; animation-delay: -1s; }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 700px);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.8);
+      border-radius: 32px;
+      background: rgba(255, 255, 255, .88);
+      box-shadow: var(--shadow);
+      text-align: center;
+      backdrop-filter: blur(12px);
+      animation: arrive .8s cubic-bezier(.2,.8,.2,1) both;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 255px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ffb18a, #ff83a3 55%, #c9a9ff);
+    }
+
+    .hero::before, .hero::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: 50%;
+    }
+    .hero::before { top: -150px; left: -70px; }
+    .hero::after { right: -80px; bottom: -180px; width: 310px; height: 310px; }
+
+    .hero-content { position: relative; z-index: 1; padding: 28px 20px; }
+    .eyebrow {
+      margin: 0 0 9px;
+      color: rgba(75, 39, 67, .78);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(2.7rem, 9vw, 5rem);
+      line-height: .98;
+      letter-spacing: -.055em;
+      text-shadow: 0 4px 0 rgba(132, 58, 103, .12);
+    }
+    .hero-emoji { display: block; margin-top: 18px; font-size: 3.5rem; filter: drop-shadow(0 8px 8px rgba(111, 54, 91, .18)); animation: bob 2.8s ease-in-out infinite; }
+
+    .message { padding: 34px clamp(22px, 7vw, 58px) 40px; }
+    .message h2 { margin: 0 0 14px; font-size: clamp(1.45rem, 4vw, 1.9rem); }
+    .message p { max-width: 500px; margin: 0 auto; color: var(--muted); font-size: 1.04rem; line-height: 1.75; }
+    .message .wish { margin-top: 12px; color: var(--ink); font-weight: 650; }
+
+    .cake { margin: 28px auto 24px; width: 150px; height: 112px; position: relative; }
+    .cake-top { position: absolute; top: 35px; left: 15px; width: 120px; height: 31px; border-radius: 50%; background: #ffe2a8; border: 4px solid #fff; z-index: 2; }
+    .cake-body { position: absolute; top: 49px; left: 20px; width: 110px; height: 55px; border-radius: 8px 8px 20px 20px; background: linear-gradient(#ff91a7 0 45%, #ffb36b 45%); box-shadow: inset 0 -7px rgba(210, 98, 124, .16); }
+    .cake-body::after { content: ""; position: absolute; left: 12px; right: 12px; top: 12px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.7); }
+    .candle { position: absolute; z-index: 3; top: 7px; left: 70px; width: 10px; height: 36px; border-radius: 5px 5px 2px 2px; background: repeating-linear-gradient(135deg, #fff 0 5px, #bba2ff 5px 10px); }
+    .flame { position: absolute; top: -16px; left: 1px; width: 9px; height: 15px; border-radius: 50% 50% 45% 45%; background: #ffbe45; transform-origin: 50% 100%; box-shadow: 0 0 17px 5px rgba(255, 181, 55, .4); animation: flicker .8s ease-in-out infinite alternate; }
+    .cake.blown .flame { opacity: 0; transform: scale(.2) translateY(8px); transition: .25s ease; }
+
+    .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    button {
+      min-height: 48px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 22px;
+      color: #fff;
+      background: linear-gradient(135deg, #ff7898, #f15c85);
+      box-shadow: 0 8px 18px rgba(241, 92, 133, .25);
+      font: inherit;
+      font-weight: 750;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    button.secondary { color: #59476c; background: #f0e9ff; box-shadow: none; }
+    button:hover { transform: translateY(-2px); box-shadow: 0 11px 22px rgba(241, 92, 133, .3); }
+    button.secondary:hover { box-shadow: 0 8px 18px rgba(112, 80, 160, .13); }
+    button:active { transform: translateY(0); }
+    button:focus-visible { outline: 3px solid #5b3e78; outline-offset: 4px; }
+
+    .signoff { margin-top: 29px !important; color: #9c708f !important; font-size: .92rem !important; font-weight: 700; }
+    .confetti-piece { position: fixed; z-index: 5; top: -20px; width: 10px; height: 15px; pointer-events: none; animation: fall var(--duration) linear forwards; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @keyframes arrive { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes float { 0%, 100% { transform: translateY(0) rotate(-8deg); } 50% { transform: translateY(-12px) rotate(8deg); } }
+    @keyframes bob { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-7px) rotate(4deg); } }
+    @keyframes flicker { from { transform: rotate(-5deg) scale(.94); } to { transform: rotate(5deg) scale(1.06); } }
+    @keyframes fall { to { transform: translate3d(var(--drift), 110vh, 0) rotate(760deg); opacity: .9; } }
+
+    @media (max-width: 480px) {
+      body { padding: 18px 12px; }
+      .card { border-radius: 24px; }
+      .hero { min-height: 225px; }
+      .message { padding-top: 28px; padding-bottom: 32px; }
+      .sparkle:nth-child(1) { left: 4%; }
+      .sparkle:nth-child(2) { right: 4%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <span class="sparkle" aria-hidden="true">✨</span>
+  <span class="sparkle" aria-hidden="true">🎈</span>
+  <span class="sparkle" aria-hidden="true">⭐</span>
+  <span class="sparkle" aria-hidden="true">💖</span>
+
+  <main class="card">
+    <header class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">A little celebration for</p>
+        <h1>Javi!</h1>
+        <span class="hero-emoji" aria-hidden="true">🎉</span>
+      </div>
+    </header>
+
+    <section class="message" aria-labelledby="birthday-title">
+      <h2 id="birthday-title">Happy Birthday! 🎂</h2>
+      <p>Hope your day is filled with all your favorite things, plenty of laughter, and the kind of moments you’ll remember long after the candles are gone.</p>
+      <p class="wish">Here’s to a brilliant year ahead—you deserve the very best! 🥳</p>
+
+      <div class="cake" id="cake" aria-label="A birthday cake with a lit candle">
+        <div class="cake-top"></div>
+        <div class="cake-body"></div>
+        <div class="candle"><span class="flame"></span></div>
+      </div>
+
+      <div class="actions">
+        <button id="celebrate" type="button">🎊 Celebrate!</button>
+        <button id="wish-button" class="secondary" type="button">🕯️ Make a wish</button>
+      </div>
+      <p class="sr-only" id="announcement" aria-live="polite"></p>
+      <p class="signoff">Made with love, just for you 💌</p>
+    </section>
+  </main>
+
+  <script>
+    const celebrateButton = document.getElementById('celebrate');
+    const wishButton = document.getElementById('wish-button');
+    const cake = document.getElementById('cake');
+    const announcement = document.getElementById('announcement');
+    const colors = ['#ff6f91', '#ffbd69', '#9c89ff', '#67d6bd', '#ffdf70', '#ff91c8'];
+
+    function celebrate() {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        announcement.textContent = 'Happy birthday, Javi! Sending you a shower of good wishes!';
+        return;
+      }
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement('span');
+        piece.className = 'confetti-piece';
+        piece.setAttribute('aria-hidden', 'true');
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.borderRadius = Math.random() > .5 ? '50%' : '2px';
+        piece.style.setProperty('--drift', `${(Math.random() - .5) * 240}px`);
+        piece.style.setProperty('--duration', `${2.5 + Math.random() * 2.5}s`);
+        piece.style.animationDelay = `${Math.random() * .7}s`;
+        document.body.appendChild(piece);
+        piece.addEventListener('animationend', () => piece.remove(), { once: true });
+      }
+      announcement.textContent = 'Happy birthday, Javi! Hooray!';
+    }
+
+    celebrateButton.addEventListener('click', celebrate);
+    wishButton.addEventListener('click', () => {
+      const blownOut = cake.classList.toggle('blown');
+      wishButton.textContent = blownOut ? '✨ Light it again' : '🕯️ Make a wish';
+      cake.setAttribute('aria-label', blownOut ? 'A birthday cake with its candle blown out' : 'A birthday cake with a lit candle');
+      announcement.textContent = blownOut ? 'Your wish has been sent to the birthday stars! ✨' : 'The candle is glowing again. Make another wish!';
+    });
+  </script>
+</body>
+</html>
